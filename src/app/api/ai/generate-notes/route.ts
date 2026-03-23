@@ -3,6 +3,7 @@ import { z } from "zod";
 import Anthropic from "@anthropic-ai/sdk";
 import { getOrCreateMockUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+export const maxDuration = 60;
 
 const schema = z.object({ conceptId: z.string() });
 

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import Anthropic from "@anthropic-ai/sdk";
 import { prisma } from "@/lib/prisma";
+export const maxDuration = 60;
 
 const RequestBodySchema = z.object({
   feedback: z.string().optional(),
