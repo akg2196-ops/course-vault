@@ -1,0 +1,128 @@
+// Course Vault - Prisma Schema
+// SQLite for local dev; abstract storage for uploads.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  courses   Course[]
+  assets    Asset[]
+  notes     Note[]
+}
+
+model Course {
+  id        String    @id @default(cuid())
+  title     String
+  slug      String?
+  syllabusText String?
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subjects  Subject[]
+  chapters  Chapter[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Subject {
+  id        String    @id @default(cuid())
+  title     String
+  order     Int       @default(0)
+  courseId  String
+  course    Course    @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Chapter {
+  id        String    @id @default(cuid())
+  title     String
+  order     Int       @default(0)
+  courseId  String
+  course    Course    @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  topics    Topic[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Topic {
+  id        String    @id @default(cuid())
+  title     String
+  order     Int       @default(0)
+  chapterId String
+  chapter   Chapter   @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  concepts  Concept[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Concept {
+  id            String    @id @default(cuid())
+  title         String
+  order         Int       @default(0)
+  summary       String?
+  vocabulary    String?   // JSON: [{"term":"","definition":""}]
+  examples      String?
+  tags          String?   // JSON: ["tag1","tag2"]
+  difficulty    String?
+  lastReviewed  DateTime?
+  sourceLinks   String?   // JSON: [{"url":"","label":""}]
+  topicId       String
+  topic         Topic     @relation(fields: [topicId], references: [id], onDelete: Cascade)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  notes         Note[]
+}
+
+model Asset {
+  id         String       @id @default(cuid())
+  type       String       // READING | PRESENTATION | NOTE
+  mimetype   String
+  size       Int
+  path       String
+  title      String?
+  author     String?
+  date       DateTime?
+  tags       String?
+  source     String       // UPLOAD | LINK
+  slideCount Int?
+  userId     String
+  user       User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  attachments Attachment[]
+}
+
+model Attachment {
+  id       String   @id @default(cuid())
+  assetId  String
+  asset    Asset    @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  nodeType String   // COURSE | SUBJECT | CHAPTER | TOPIC | CONCEPT
+  nodeId   String
+  createdAt DateTime @default(now())
+}
+
+model Note {
+  id        String   @id @default(cuid())
+  content   String
+  source    String   // AI | MANUAL
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  conceptId String?
+  concept   Concept? @relation(fields: [conceptId], references: [id], onDelete: Cascade)
+  nodeType  String?
+  nodeId    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

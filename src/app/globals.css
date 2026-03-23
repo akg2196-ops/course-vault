@@ -1,0 +1,47 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --notion-bg: #191919;
+  --notion-bg-secondary: #1f1f1f;
+  --notion-border: #373737;
+  --notion-text: #ffffff;
+  --notion-text-secondary: #b3b3b3;
+  --notion-accent: #2383e2;
+}
+
+* {
+  border-color: theme("colors.notion.border");
+}
+
+body {
+  color: var(--notion-text);
+  background: var(--notion-bg);
+  font-feature-settings: "rlig" 1, "calt" 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Scrollbar - Notion style */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* Prose for markdown */
+.prose-invert h1 { @apply text-xl font-medium text-notion-text; }
+.prose-invert h2 { @apply text-lg font-medium text-notion-text mt-4; }
+.prose-invert p { @apply text-notion-text-secondary text-sm leading-relaxed; }
+.prose-invert ul { @apply list-disc list-inside text-notion-text-secondary text-sm space-y-1; }
+.prose-invert strong { @apply text-notion-text font-medium; }
