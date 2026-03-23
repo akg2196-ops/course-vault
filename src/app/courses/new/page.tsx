@@ -30,12 +30,11 @@ export default function NewCoursePage() {
   }, [pastedText, pdfFile]);
 
   async function extractPdfText(file: File): Promise<string> {
-    // pdfjs is ESM; dynamic import avoids server-side bundling issues.
-    const pdfjsLib: any = await import("pdfjs-dist/legacy/build/pdf.min.mjs");
-    pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
-      "pdfjs-dist/legacy/build/pdf.worker.mjs",
-      import.meta.url
-    ).toString();
+    // pdfjs is ESM; dynamic import loads only on the client when this runs.
+    const pdfjsLib = await import("pdfjs-dist");
+    // Webpack requires `?url` so the worker is emitted as an asset (new URL + package subpath fails in Next).
+    const workerMod = await import("pdfjs-dist/build/pdf.worker.mjs?url");
+    pdfjsLib.GlobalWorkerOptions.workerSrc = workerMod.default;
 
     const arrayBuffer = await file.arrayBuffer();
     const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;

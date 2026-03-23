@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { getOrCreateMockUser } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 
+export const dynamic = "force-dynamic";
+
 async function getSubjectIds(courseId: string): Promise<string[]> {
   const s = await prisma.subject.findMany({
     where: { courseId },

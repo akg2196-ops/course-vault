@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { getOrCreateMockUser } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 
+export const dynamic = "force-dynamic";
+
 /** GET /api/search?q=... - global search across map + assets + tags */
 export async function GET(req: NextRequest) {
   try {

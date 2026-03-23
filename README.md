@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Course Vault — One-Stop Study OS
 
 A production-ready web app to **store, organize, and study** all course material across semesters.
@@ -109,3 +110,6 @@ uploads/              # Local file storage (gitignored)
 ## License
 
 MIT.
+=======
+# course-vault
+>>>>>>> 58fc9ad76ca78aaba74943b83b05120c75334d98
