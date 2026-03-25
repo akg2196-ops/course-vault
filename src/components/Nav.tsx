@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { BookOpen, Library, Search, LayoutDashboard } from "lucide-react";
+import { BookOpen, Search, LayoutDashboard } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -32,12 +32,6 @@ export function Nav() {
             <Button variant="ghost" size="sm">
               <LayoutDashboard className="h-4 w-4" />
               My Courses
-            </Button>
-          </Link>
-          <Link href="/library">
-            <Button variant="ghost" size="sm">
-              <Library className="h-4 w-4" />
-              Library
             </Button>
           </Link>
         </nav>
